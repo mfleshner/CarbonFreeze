@@ -66,8 +66,18 @@ public interface ISteamLocator
     IReadOnlyList<SteamUser> ListUsers();
     SteamUser? MostRecentUser();
 
-    /// <summary>Heuristic: userdata\&lt;id3&gt;\&lt;appid&gt;\remotecache.vdf exists for the most recent user.</summary>
+    /// <summary>
+    /// Heuristic: userdata\&lt;id3&gt;\&lt;appid&gt;\remotecache.vdf exists for the most recent user and the
+    /// per-game Cloud switch in userdata\&lt;id3&gt;\7\remote\sharedconfig.vdf is not "0".
+    /// </summary>
     bool AppUsesSteamCloud(string appId);
+
+    /// <summary>
+    /// Best-effort save-folder template for an installed game: derived from Steam's sync bookkeeping
+    /// (remotecache.vdf) when the game has ever synced, else from a scan of the usual save locations
+    /// for a folder named after the game. Null when nothing is found. Never throws.
+    /// </summary>
+    string? GuessSavePathTemplate(SteamGame game);
 
     void Launch(string appId);
 }

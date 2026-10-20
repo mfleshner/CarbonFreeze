@@ -27,8 +27,10 @@ Old backups are pruned per game once there are more than *Max backups per game* 
 
 If Steam Cloud is enabled for a game, Steam will happily "restore" whatever it last synced on
 top of the profile you just swapped in. SaveSwitch shows a yellow banner when it detects cloud
-data for the game (`userdata\<id>\<appid>\remotecache.vdf` exists). Before switching, turn it
-off in **Steam > Library > right-click the game > Properties > General > Steam Cloud**.
+data for the game (`userdata\<id>\<appid>\remotecache.vdf` exists) and the game's Cloud switch
+has not been turned off (`cloudenabled "0"` in `userdata\<id>\7\remote\sharedconfig.vdf`).
+Before switching, turn it off in
+**Steam > Library > right-click the game > Properties > General > Steam Cloud**.
 
 ## Build and publish
 
@@ -55,7 +57,7 @@ Solution layout:
 
 1. **Add game...** in the toolbar.
 2. Either pick a **preset** from the drop-down (fills everything in), or:
-   - **Pick from Steam...** to choose an installed Steam game (fills the name and app id, and the
+   - **Pick from Steam...** to choose an installed Steam game (fills the name, app id and save folder: from a preset when one matches, otherwise derived from Steam's own cloud-sync records in `userdata\<id>\<appid>\remotecache.vdf`, otherwise by looking for a folder named after the game under the usual save locations; and the
      template too when the game matches a preset), or
    - type a **Name** and a **Save folder template**, using **Browse...** to point at the folder
      whose *contents* are one complete save.

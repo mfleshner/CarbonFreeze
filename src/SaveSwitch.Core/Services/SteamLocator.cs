@@ -181,11 +181,79 @@ public sealed class SteamLocator : ISteamLocator
             if (install is null) return false;
             var user = MostRecentUser();
             if (user is null) return false;
-            return File.Exists(Path.Combine(install.SteamPath, "userdata", user.SteamId3, appId.Trim(), "remotecache.vdf"));
+
+            var userdata = Path.Combine(install.SteamPath, "userdata", user.SteamId3);
+            if (!File.Exists(Path.Combine(userdata, appId.Trim(), "remotecache.vdf"))) return false;
+
+            // remotecache.vdf is left behind after the user turns Cloud off for a game, so it only
+            // proves Cloud was on at some point. The per-game switch itself lives in sharedconfig.vdf.
+            return IsCloudEnabledForApp(userdata, appId.Trim()) ?? true;
         }
         catch
         {
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Reads the per-game "Keep games saves in the Steam Cloud" switch from
+    /// userdata\&lt;id3&gt;\7\remote\sharedconfig.vdf. Returns null when the file or the entry is absent
+    /// (Steam only writes the key once the user has toggled it).
+    /// </summary>
+    private static bool? IsCloudEnabledForApp(string userdata, string appId)
+    {
+        var shared = VdfParser.TryParseFile(Path.Combine(userdata, "7", "remote", "sharedconfig.vdf"));
+        var value = shared?["UserRoamingConfigStore"]?["Software"]?["Valve"]?["Steam"]?["apps"]?[appId]?.GetString("cloudenabled");
+        return value switch
+        {
+            "0" => false,
+            "1" => true,
+            _ => null,
+        };
+    }
+
+    public string? GuessSavePathTemplate(SteamGame game)
+    {
+        ArgumentNullException.ThrowIfNull(game);
+        try
+        {
+            var install = FindInstall();
+            if (install is null) return null;
+
+            var user = MostRecentUser();
+            if (user is not null)
+            {
+                var cache = VdfParser.TryParseFile(Path.Combine(install.SteamPath, "userdata", user.SteamId3, game.AppId, "remotecache.vdf"));
+                if (cache is not null)
+                {
+                    var fromCache = SavePathGuesser.FromRemoteCache(cache, game.AppId, user, install.SteamPath, game);
+                    if (fromCache is not null) return fromCache;
+                }
+            }
+
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var bases = new List<SavePathGuesser.BaseFolder>();
+            if (localAppData.Length > 0)
+            {
+                bases.Add(new("%LOCALAPPDATA%", localAppData));
+                bases.Add(new("{LocalLow}", Path.GetFullPath(Path.Combine(localAppData, "..", "LocalLow")), ScanOneLevel: true));
+            }
+            if (roaming.Length > 0) bases.Add(new("%APPDATA%", roaming));
+            if (documents.Length > 0)
+            {
+                bases.Add(new("{Documents}\\My Games", Path.Combine(documents, "My Games")));
+                bases.Add(new("{Documents}", documents));
+            }
+            if (profile.Length > 0) bases.Add(new("{SavedGames}", Path.Combine(profile, "Saved Games")));
+
+            return SavePathGuesser.FromCommonFolders(game.Name, game.InstallDir, bases, Directory.Exists, Directory.EnumerateDirectories);
+        }
+        catch
+        {
+            return null;
         }
     }
 

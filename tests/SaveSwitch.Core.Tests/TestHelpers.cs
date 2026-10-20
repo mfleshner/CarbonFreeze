@@ -55,5 +55,6 @@ public sealed class FakeSteamLocator : ISteamLocator
     public IReadOnlyList<SteamUser> ListUsers() => User is null ? Array.Empty<SteamUser>() : new[] { User };
     public SteamUser? MostRecentUser() => User;
     public bool AppUsesSteamCloud(string appId) => CloudApps;
+    public string? GuessSavePathTemplate(SteamGame game) => null;
     public void Launch(string appId) => Launched.Add(appId);
 }

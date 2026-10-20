@@ -112,6 +112,52 @@ public class SteamLocatorTests
     }
 
     [Fact]
+    public void MostRecentUser_without_MostRecent_flag_uses_newest_userdata_dir()
+    {
+        // Shape seen on a real Steam client (Oct 2026): loginusers.vdf lists users with
+        // AutoLogin/Timestamp but no MostRecent key at all. Resolution must fall back to the
+        // userdata directory that was written most recently.
+        var (tmp, root, locator) = MakeSteam();
+        using (tmp)
+        {
+            File.WriteAllText(Path.Combine(root, "config", "loginusers.vdf"), """
+                "users"
+                {
+                	"76561197983122154"
+                	{
+                		"AccountName"		"first"
+                		"PersonaName"		"First"
+                		"RememberPassword"		"1"
+                		"AutoLogin"		"1"
+                		"Timestamp"		"1792515072"
+                	}
+                	"76561198269539151"
+                	{
+                		"AccountName"		"second"
+                		"PersonaName"		"Second"
+                		"RememberPassword"		"1"
+                		"AutoLogin"		"0"
+                		"Timestamp"		"1685819030"
+                	}
+                }
+                """);
+
+            var users = locator.ListUsers();
+            Assert.Equal(2, users.Count);
+            Assert.All(users, u => Assert.False(u.MostRecent));
+
+            var second = Path.Combine(root, "userdata", "309273423");
+            var first = Path.Combine(root, "userdata", "22856426");
+            Directory.CreateDirectory(second);
+            Directory.CreateDirectory(first);
+            Directory.SetLastWriteTimeUtc(second, DateTime.UtcNow.AddDays(-30));
+            Directory.SetLastWriteTimeUtc(first, DateTime.UtcNow);
+
+            Assert.Equal("first", locator.MostRecentUser()!.AccountName);
+        }
+    }
+
+    [Fact]
     public void ListUsers_falls_back_to_userdata_dirs_and_cloud_heuristic_works()
     {
         var (tmp, root, locator) = MakeSteam();
@@ -131,6 +177,70 @@ public class SteamLocatorTests
             Assert.True(locator.AppUsesSteamCloud("4078430"));
             Assert.False(locator.AppUsesSteamCloud("999"));
             Assert.False(locator.AppUsesSteamCloud(""));
+        }
+    }
+
+    [Fact]
+    public void AppUsesSteamCloud_respects_per_game_switch_in_sharedconfig()
+    {
+        // Real shape from a Steam client where the user turned Cloud off for one game: the
+        // remotecache.vdf stays behind, but sharedconfig.vdf records cloudenabled "0".
+        var (tmp, root, locator) = MakeSteam();
+        using (tmp)
+        {
+            var userdata = Path.Combine(root, "userdata", "52079950");
+            foreach (var app in new[] { "4078430", "2713000", "555" })
+            {
+                Directory.CreateDirectory(Path.Combine(userdata, app));
+                File.WriteAllText(Path.Combine(userdata, app, "remotecache.vdf"), $"\"{app}\" {{}}");
+            }
+            Directory.CreateDirectory(Path.Combine(userdata, "7", "remote"));
+            File.WriteAllText(Path.Combine(userdata, "7", "remote", "sharedconfig.vdf"), """
+                "UserRoamingConfigStore"
+                {
+                	"Software"
+                	{
+                		"Valve"
+                		{
+                			"Steam"
+                			{
+                				"apps"
+                				{
+                					"2713000"
+                					{
+                						"cloudenabled"		"1"
+                					}
+                					"4078430"
+                					{
+                						"cloudenabled"		"0"
+                					}
+                				}
+                			}
+                		}
+                	}
+                }
+                """);
+
+            Assert.False(locator.AppUsesSteamCloud("4078430")); // switched off by the user
+            Assert.True(locator.AppUsesSteamCloud("2713000"));  // explicitly on
+            Assert.True(locator.AppUsesSteamCloud("555"));      // no entry: Steam default is on
+            Assert.False(locator.AppUsesSteamCloud("999"));     // no remotecache at all
+        }
+    }
+
+    [Fact]
+    public void AppUsesSteamCloud_ignores_malformed_sharedconfig()
+    {
+        var (tmp, root, locator) = MakeSteam();
+        using (tmp)
+        {
+            var userdata = Path.Combine(root, "userdata", "52079950");
+            Directory.CreateDirectory(Path.Combine(userdata, "4078430"));
+            File.WriteAllText(Path.Combine(userdata, "4078430", "remotecache.vdf"), "\"4078430\" {}");
+            Directory.CreateDirectory(Path.Combine(userdata, "7", "remote"));
+            File.WriteAllText(Path.Combine(userdata, "7", "remote", "sharedconfig.vdf"), "\"UserRoamingConfigStore\" { \"Software\" {");
+
+            Assert.True(locator.AppUsesSteamCloud("4078430"));
         }
     }
 

@@ -199,12 +199,31 @@ public sealed partial class GameEditorViewModel : ObservableObject
         Name = game.Name;
         SteamAppId = game.AppId;
 
+        // Steam's own sync bookkeeping, then the usual save locations. Null for a game that has
+        // never been run on this PC (nothing to find yet) or whose files are not where we look.
+        string? guess = null;
+        try { guess = _steam.GuessSavePathTemplate(game); }
+        catch { guess = null; }
+
         var preset = FindPresetFor(game);
         if (preset is not null)
         {
             SavePathTemplate = preset.SavePathTemplate;
             if (string.IsNullOrWhiteSpace(Notes) && !string.IsNullOrWhiteSpace(preset.Notes))
                 Notes = preset.Notes;
+            if (ResolvedExists || guess is null) return;
+
+            // The curated folder is not on this PC but the detected one is: trust what is there.
+            SavePathTemplate = guess;
+            if (!ResolvedExists) SavePathTemplate = preset.SavePathTemplate;
+            return;
+        }
+
+        if (guess is not null)
+        {
+            SavePathTemplate = guess;
+            if (string.IsNullOrWhiteSpace(Notes))
+                Notes = "Save folder detected automatically. Check the \"Resolves to\" line before the first switch.";
         }
     }
 
