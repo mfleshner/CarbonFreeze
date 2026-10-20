@@ -132,6 +132,9 @@ refreshes.
 CarbonFreeze is free and open source. If it saved your save, you can
 [buy me a coffee on Ko-fi](https://ko-fi.com/mfleshner).
 
+Questions and bug reports: open an [issue](https://github.com/mfleshner/CarbonFreeze/issues),
+or join the [thread on the STAR WARS: Galactic Racer Steam forum](https://steamcommunity.com/app/4078430/discussions/1/572678319862129914/).
+
 ## Upgrading from SaveSwitch
 
 CarbonFreeze used to be called SaveSwitch. The first run moves the old config
