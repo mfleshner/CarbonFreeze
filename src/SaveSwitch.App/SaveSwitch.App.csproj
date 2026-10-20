@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -12,6 +12,8 @@
     <Version>0.1.0</Version>
     <Product>SaveSwitch</Product>
     <Description>Save-game profile switcher. Swaps save folders by renaming them; nothing is deleted without a zip backup.</Description>
+    <!-- Application.ThemeMode (Fluent theme) is marked experimental in WPF; the API is stable enough for our use. -->
+    <NoWarn>$(NoWarn);WPF0001</NoWarn>
   </PropertyGroup>
 
   <!--

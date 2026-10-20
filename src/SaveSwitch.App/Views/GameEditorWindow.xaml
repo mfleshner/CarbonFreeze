@@ -10,7 +10,7 @@
         Width="640" SizeToContent="Height" MinWidth="560"
         ResizeMode="NoResize" ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource Brush.WindowBackground}"
+        Background="{DynamicResource Brush.WindowBackground}"
         FocusManager.FocusedElement="{Binding ElementName=NameBox}">
 
     <Grid Margin="16">
@@ -43,7 +43,7 @@
             </DockPanel>
             <Popup x:Name="TokensPopup" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=TemplateBox}"
                    AllowsTransparency="True" PopupAnimation="Fade">
-                <Border Background="{StaticResource Brush.PaneBackground}" BorderBrush="{StaticResource Brush.Border}"
+                <Border Background="{DynamicResource Brush.PaneBackground}" BorderBrush="{DynamicResource Brush.Border}"
                         BorderThickness="1" Padding="10" MaxWidth="560">
                     <StackPanel>
                         <TextBlock FontWeight="SemiBold" Margin="0,0,0,6"
@@ -82,10 +82,10 @@
                 <TextBlock Margin="6,0,0,0" Text="{Binding ResolveStatusText}">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                            <Setter Property="Foreground" Value="{StaticResource Brush.Error}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Brush.Error}" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ResolvedExists}" Value="True">
-                                    <Setter Property="Foreground" Value="{StaticResource Brush.Success}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource Brush.Success}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -98,7 +98,7 @@
             <!-- Template changed warning -->
             <Border Style="{StaticResource Border.Warning}" Margin="0,0,0,8"
                     Visibility="{Binding ShowTemplateChangedWarning, Converter={StaticResource BoolToVis}}">
-                <TextBlock Foreground="{StaticResource Brush.WarningText}"
+                <TextBlock Foreground="{DynamicResource Brush.WarningText}"
                            Text="This game already has parked profiles. Changing the template is allowed, but the parked profiles stay where they are and will be swapped into the new location on the next switch." />
             </Border>
 

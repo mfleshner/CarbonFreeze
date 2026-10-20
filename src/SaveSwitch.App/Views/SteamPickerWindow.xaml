@@ -10,7 +10,7 @@
         Width="620" Height="520" MinWidth="480" MinHeight="360"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource Brush.WindowBackground}"
+        Background="{DynamicResource Brush.WindowBackground}"
         FocusManager.FocusedElement="{Binding ElementName=FilterBox}">
 
     <Grid Margin="16">

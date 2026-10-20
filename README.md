@@ -101,7 +101,8 @@ as an error in the dialog and in the game header.
 
 The store root can be changed globally in **Settings...** or per game under **Advanced >
 Store root override** in the game dialog. Changing it does not move existing profiles.
-**Settings...** also shows the config path with an **Open** button.
+**Settings...** also shows the config path with an **Open** button, and has a **Theme** choice:
+System (follows the Windows app mode, the default), Light or Dark. The change applies immediately.
 
 Keyboard: **Enter** on a profile row switches, **Delete** deletes (with confirmation), **F5**
 refreshes.

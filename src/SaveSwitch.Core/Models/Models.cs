@@ -36,6 +36,9 @@ public sealed class AppConfig
 
     /// <summary>Backups kept per game before the oldest are pruned. 0 = unlimited.</summary>
     public int MaxBackupsPerGame { get; set; } = 20;
+
+    /// <summary>Colour theme: "System" (follow Windows app mode), "Light" or "Dark".</summary>
+    public string Theme { get; set; } = "System";
 }
 
 public sealed record ProfileInfo(

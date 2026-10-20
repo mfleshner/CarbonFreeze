@@ -20,10 +20,16 @@ public sealed partial class SettingsViewModel : ObservableObject
         _dialogs = dialogs;
         _storeRoot = config.StoreRoot ?? "";
         _maxBackupsText = config.MaxBackupsPerGame.ToString();
+        _theme = ThemeManager.Normalise(config.Theme);
         ConfigPath = configStore.ConfigPath;
     }
 
     public string ConfigPath { get; }
+
+    public IReadOnlyList<string> ThemeOptions => ThemeManager.Options;
+
+    [ObservableProperty]
+    private string _theme = ThemeManager.System;
 
     [ObservableProperty]
     private string _storeRoot = "";
@@ -45,6 +51,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         config.StoreRoot = string.IsNullOrWhiteSpace(StoreRoot) ? null : StoreRoot.Trim();
         if (int.TryParse(MaxBackupsText.Trim(), out int n) && n >= 0)
             config.MaxBackupsPerGame = n;
+        config.Theme = ThemeManager.Normalise(Theme);
     }
 
     [RelayCommand]

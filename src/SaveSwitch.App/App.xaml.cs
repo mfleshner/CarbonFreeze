@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Threading;
 using SaveSwitch.App.Services;
 using SaveSwitch.App.ViewModels;
@@ -31,6 +31,8 @@ public partial class App : Application
             Shutdown(1);
             return;
         }
+
+        ThemeManager.Apply(config.Theme);
 
         IProfileService profiles = new ProfileService(expander, config);
 

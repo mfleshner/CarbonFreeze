@@ -9,7 +9,7 @@
         Title="SaveSwitch"
         Width="1040" Height="680"
         MinWidth="900" MinHeight="560"
-        Background="{StaticResource Brush.WindowBackground}"
+        Background="{DynamicResource Brush.WindowBackground}"
         WindowStartupLocation="CenterScreen">
 
     <Window.InputBindings>
@@ -19,22 +19,22 @@
     <DockPanel>
 
         <!-- Footer: about line -->
-        <Border DockPanel.Dock="Bottom" Background="{StaticResource Brush.StatusBar}"
-                BorderBrush="{StaticResource Brush.Border}" BorderThickness="0,1,0,0" Padding="12,4">
+        <Border DockPanel.Dock="Bottom" Background="{DynamicResource Brush.StatusBar}"
+                BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,1,0,0" Padding="12,4">
             <TextBlock Style="{StaticResource Text.Secondary}" FontSize="11"
                        Text="{x:Static vm:MainViewModel.AboutLine}" />
         </Border>
 
         <!-- Status bar -->
-        <Border DockPanel.Dock="Bottom" Background="{StaticResource Brush.PaneBackground}"
-                BorderBrush="{StaticResource Brush.Border}" BorderThickness="0,1,0,0" Padding="12,6">
+        <Border DockPanel.Dock="Bottom" Background="{DynamicResource Brush.PaneBackground}"
+                BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,1,0,0" Padding="12,6">
             <TextBlock x:Name="StatusText" Text="{Binding StatusMessage}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
                        ToolTip="{Binding StatusMessage}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding StatusIsError}" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource Brush.Error}" />
+                                <Setter Property="Foreground" Value="{DynamicResource Brush.Error}" />
                                 <Setter Property="FontWeight" Value="SemiBold" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -44,8 +44,8 @@
         </Border>
 
         <!-- Toolbar -->
-        <Border DockPanel.Dock="Top" Background="{StaticResource Brush.PaneBackground}"
-                BorderBrush="{StaticResource Brush.Border}" BorderThickness="0,0,0,1" Padding="12,8">
+        <Border DockPanel.Dock="Top" Background="{DynamicResource Brush.PaneBackground}"
+                BorderBrush="{DynamicResource Brush.Border}" BorderThickness="0,0,0,1" Padding="12,8">
             <DockPanel>
                 <Button DockPanel.Dock="Right" Margin="0" Content="Settings…" Command="{Binding OpenSettingsCommand}" />
                 <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshCommand}" ToolTip="F5" />
@@ -118,11 +118,11 @@
                                     <TextBlock Text="{Binding ResolvedSavePath}" TextWrapping="Wrap">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                                <Setter Property="Foreground" Value="{StaticResource Brush.Accent}" />
+                                                <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}" />
                                                 <Setter Property="TextDecorations" Value="Underline" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding SavePathExists}" Value="False">
-                                                        <Setter Property="Foreground" Value="{StaticResource Brush.Error}" />
+                                                        <Setter Property="Foreground" Value="{DynamicResource Brush.Error}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -144,7 +144,7 @@
                             <!-- Steam Cloud banner -->
                             <Border Style="{StaticResource Border.Warning}"
                                     Visibility="{Binding ShowCloudWarning, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Foreground="{StaticResource Brush.WarningText}"
+                                <TextBlock Foreground="{DynamicResource Brush.WarningText}"
                                            Text="{x:Static vm:MainViewModel.SteamCloudWarning}" />
                             </Border>
 
@@ -214,7 +214,7 @@
                                 <DataGridTextColumn Header="Active" Binding="{Binding IsActive, Converter={StaticResource ActiveMarker}}" Width="90">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="{StaticResource Brush.Success}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource Brush.Success}" />
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>

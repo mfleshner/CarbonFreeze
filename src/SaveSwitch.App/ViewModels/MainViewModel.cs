@@ -223,6 +223,7 @@ public sealed partial class MainViewModel : ObservableObject
 
         vm.ApplyTo(_config);
         SaveConfig();
+        ThemeManager.Apply(_config.Theme);
         RefreshGameDetails();
         SetStatus("Settings saved.");
     }
