@@ -25,7 +25,8 @@ public partial class App : Application
         // Core services (constructor signatures are part of the contract with CarbonFreeze.Core).
         ISteamLocator steam = new SteamLocator();
         IPathExpander expander = new PathExpander(steam);
-        IConfigStore configStore = new ConfigStore();
+        // Optional: CarbonFreeze.exe --config <path	o\config.json> for a portable or test setup.
+        IConfigStore configStore = ConfigPathFromArgs(e.Args) is { } configPath ? new ConfigStore(configPath) : new ConfigStore();
         IPresetCatalog presets = new PresetCatalog();
 
         AppConfig? config = LoadConfigOrFallback(configStore);
@@ -72,6 +73,16 @@ public partial class App : Application
                 MessageBoxResult.No);
             return choice == MessageBoxResult.Yes ? new AppConfig() : null;
         }
+    }
+
+    private static string? ConfigPathFromArgs(string[] args)
+    {
+        for (var i = 0; i < args.Length - 1; i++)
+        {
+            if (string.Equals(args[i], "--config", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrWhiteSpace(args[i + 1]))
+                return System.IO.Path.GetFullPath(args[i + 1]);
+        }
+        return null;
     }
 
     private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
