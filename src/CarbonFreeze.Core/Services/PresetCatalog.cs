@@ -29,7 +29,8 @@ public sealed class PresetCatalog : IPresetCatalog
         var presets = JsonSerializer.Deserialize<List<GamePreset>>(stream, Options) ?? new List<GamePreset>();
         return presets
             .Where(p => !string.IsNullOrWhiteSpace(p.Name))
-            .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
+            .OrderByDescending(p => p.Featured)
+            .ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
             .ToList();
     }
 }

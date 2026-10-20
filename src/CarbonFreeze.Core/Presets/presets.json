@@ -3,6 +3,7 @@
     "Name": "STAR WARS: Galactic Racer",
     "SavePathTemplate": "%LOCALAPPDATA%\\StarWarsGalacticRacer\\Saved\\SaveGames\\{SteamId64}",
     "SteamAppId": "4078430",
+    "Featured": true,
     "Notes": "Uses Steam Cloud; disable it for this game before switching."
   },
   {

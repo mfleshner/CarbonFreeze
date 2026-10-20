@@ -33,7 +33,7 @@ public sealed partial class GameEditorViewModel : ObservableObject
         IsEdit = existing is not null;
         Title = IsEdit ? "Edit game" : "Add game";
 
-        try { Presets = new ObservableCollection<GamePreset>(_presets.All.OrderBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)); }
+        try { Presets = new ObservableCollection<GamePreset>(_presets.All); }
         catch { Presets = new ObservableCollection<GamePreset>(); }
 
         try

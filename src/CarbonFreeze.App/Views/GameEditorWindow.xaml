@@ -20,10 +20,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Preset -->
-        <DockPanel Grid.Row="0" Margin="{StaticResource Spacing.Field}">
-            <TextBlock DockPanel.Dock="Left" Style="{StaticResource Text.Label}" Margin="0,0,8,0" VerticalAlignment="Center"
-                       Text="Use preset:" />
+        <!-- Pick from Steam, or a preset -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,12">
+            <Button DockPanel.Dock="Left" Style="{StaticResource Button.Primary}" Content="Pick from Steam…"
+                    Command="{Binding PickFromSteamCommand}" ToolTip="{Binding SteamPickerTooltip}"
+                    ToolTipService.ShowOnDisabled="True" />
+            <TextBlock DockPanel.Dock="Left" Style="{StaticResource Text.Label}" Margin="8,0,8,0" VerticalAlignment="Center"
+                       Text="or use a preset:" />
             <ComboBox ItemsSource="{Binding Presets}" SelectedItem="{Binding SelectedPreset}" DisplayMemberPath="Name"
                       ToolTip="Fills name, save folder template, Steam App Id and notes from a known game" />
         </DockPanel>
@@ -104,12 +107,8 @@
 
             <!-- Steam App Id -->
             <TextBlock Style="{StaticResource Text.Label}" Text="Steam App Id (optional)" />
-            <DockPanel Margin="{StaticResource Spacing.Field}">
-                <Button DockPanel.Dock="Right" Margin="6,0,0,0" Content="Pick from Steam…"
-                        Command="{Binding PickFromSteamCommand}" ToolTip="{Binding SteamPickerTooltip}"
-                        ToolTipService.ShowOnDisabled="True" />
-                <TextBox Width="140" HorizontalAlignment="Left" Text="{Binding SteamAppId, UpdateSourceTrigger=PropertyChanged}" />
-            </DockPanel>
+            <TextBox Width="140" HorizontalAlignment="Left" Margin="{StaticResource Spacing.Field}"
+                     Text="{Binding SteamAppId, UpdateSourceTrigger=PropertyChanged}" />
 
             <!-- Notes -->
             <TextBlock Style="{StaticResource Text.Label}" Text="Notes" />

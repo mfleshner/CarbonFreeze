@@ -64,7 +64,8 @@ public sealed record GamePreset(
     string Name,
     string SavePathTemplate,
     string? SteamAppId,
-    string? Notes);
+    string? Notes,
+    bool Featured = false);
 
 public sealed record SteamInstall(string SteamPath, IReadOnlyList<string> LibraryPaths);
 
