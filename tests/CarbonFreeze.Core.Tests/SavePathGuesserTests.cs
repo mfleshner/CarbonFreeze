@@ -6,7 +6,7 @@ namespace CarbonFreeze.Core.Tests;
 
 public class SavePathGuesserTests
 {
-    private static readonly SteamUser User = new("76561197983122154", "22856426", "matt", "Matt", true);
+    private static readonly SteamUser User = new("76561198012345678", "52079950", "matt", "Matt", true);
     private const string Steam = @"C:\Program Files (x86)\Steam";
     private static readonly SteamGame Game = new("4078430", "STAR WARS: Galactic Racer\u2122", "STAR WARS Galactic Racer", @"N:\SteamLibrary");
 
@@ -25,8 +25,8 @@ public class SavePathGuesserTests
     {
         // Real shape from STAR WARS: Galactic Racer.
         var t = Guess("4078430",
-            ("StarWarsGalacticRacer/Saved/SaveGames/76561197983122154/GriffinRun.0.6.sav", 3),
-            ("StarWarsGalacticRacer/Saved/SaveGames/76561197983122154/GriffinSave.6.sav", 3));
+            ("StarWarsGalacticRacer/Saved/SaveGames/76561198012345678/GriffinRun.0.6.sav", 3),
+            ("StarWarsGalacticRacer/Saved/SaveGames/76561198012345678/GriffinSave.6.sav", 3));
         Assert.Equal(@"%LOCALAPPDATA%\StarWarsGalacticRacer\Saved\SaveGames\{SteamId64}", t);
     }
 
@@ -36,8 +36,8 @@ public class SavePathGuesserTests
         // Rogue Legacy 2 with a single profile: the deepest common dir is Profile0, but the
         // per-user folder is the right swap unit.
         var t = Guess("1253920",
-            ("Cellar Door Games/Rogue Legacy 2/Saves/Steam/76561197983122154/Profile0/Equipment.rc2dat", 12),
-            ("Cellar Door Games/Rogue Legacy 2/Saves/Steam/76561197983122154/Profile0/GameMode.rc2dat", 12));
+            ("Cellar Door Games/Rogue Legacy 2/Saves/Steam/76561198012345678/Profile0/Equipment.rc2dat", 12),
+            ("Cellar Door Games/Rogue Legacy 2/Saves/Steam/76561198012345678/Profile0/GameMode.rc2dat", 12));
         Assert.Equal(@"{LocalLow}\Cellar Door Games\Rogue Legacy 2\Saves\Steam\{SteamId64}", t);
     }
 
@@ -45,8 +45,8 @@ public class SavePathGuesserTests
     public void SteamId3_folder_is_tokenised()
     {
         var t = Guess("1030300",
-            ("Team Cherry/Hollow Knight Silksong/22856426/user1.dat", 12),
-            ("Team Cherry/Hollow Knight Silksong/22856426/shared.dat", 12));
+            ("Team Cherry/Hollow Knight Silksong/52079950/user1.dat", 12),
+            ("Team Cherry/Hollow Knight Silksong/52079950/shared.dat", 12));
         Assert.Equal(@"{LocalLow}\Team Cherry\Hollow Knight Silksong\{SteamId3}", t);
     }
 
@@ -56,7 +56,7 @@ public class SavePathGuesserTests
         Assert.Equal(@"{Documents}\Saved Games\Hades",
             Guess("1145360", ("Saved Games/Hades/Profile1.sav", 2), ("Saved Games/Hades/Profile2.sav", 2)));
         Assert.Equal(@"%APPDATA%\Brotato\{SteamId64}",
-            Guess("1942280", ("Brotato/76561197983122154/save.json", 4)));
+            Guess("1942280", ("Brotato/76561198012345678/save.json", 4)));
     }
 
     [Fact]

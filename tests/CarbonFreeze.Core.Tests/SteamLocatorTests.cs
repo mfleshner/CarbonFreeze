@@ -123,7 +123,7 @@ public class SteamLocatorTests
             File.WriteAllText(Path.Combine(root, "config", "loginusers.vdf"), """
                 "users"
                 {
-                	"76561197983122154"
+                	"76561198012345678"
                 	{
                 		"AccountName"		"first"
                 		"PersonaName"		"First"
@@ -131,7 +131,7 @@ public class SteamLocatorTests
                 		"AutoLogin"		"1"
                 		"Timestamp"		"1792515072"
                 	}
-                	"76561198269539151"
+                	"76561198087654321"
                 	{
                 		"AccountName"		"second"
                 		"PersonaName"		"Second"
@@ -146,8 +146,8 @@ public class SteamLocatorTests
             Assert.Equal(2, users.Count);
             Assert.All(users, u => Assert.False(u.MostRecent));
 
-            var second = Path.Combine(root, "userdata", "309273423");
-            var first = Path.Combine(root, "userdata", "22856426");
+            var second = Path.Combine(root, "userdata", "127388593");
+            var first = Path.Combine(root, "userdata", "52079950");
             Directory.CreateDirectory(second);
             Directory.CreateDirectory(first);
             Directory.SetLastWriteTimeUtc(second, DateTime.UtcNow.AddDays(-30));
