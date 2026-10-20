@@ -141,6 +141,16 @@
                                            Visibility="{Binding SavePathError, Converter={StaticResource NullToVis}}" />
                             </WrapPanel>
 
+                            <!-- Store folder -->
+                            <WrapPanel Margin="0,2,0,0">
+                                <TextBlock Style="{StaticResource Text.Secondary}" Text="Store folder: " />
+                                <Button Style="{StaticResource Button.Link}" Command="{Binding OpenStoreFolderCommand}"
+                                        ToolTip="Parked profiles and backups for this game. Open in Explorer">
+                                    <TextBlock Text="{Binding StorePath}" TextWrapping="Wrap"
+                                               Foreground="{DynamicResource Brush.Accent}" TextDecorations="Underline" />
+                                </Button>
+                            </WrapPanel>
+
                             <!-- Steam Cloud banner -->
                             <Border Style="{StaticResource Border.Warning}"
                                     Visibility="{Binding ShowCloudWarning, Converter={StaticResource BoolToVis}}">
@@ -153,19 +163,25 @@
 
                         <!-- Profile buttons -->
                         <WrapPanel DockPanel.Dock="Top" Margin="{StaticResource Spacing.ButtonRow}">
-                            <Button Content="Switch to selected" Style="{StaticResource Button.Primary}"
+                            <WrapPanel.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Margin" Value="0,0,6,6" />
+                                </Style>
+                            </WrapPanel.Resources>
+                            <Button Content="Switch to selected" Style="{StaticResource Button.Primary}" Margin="0,0,6,6"
                                     Command="{Binding SwitchToSelectedCommand}" ToolTip="Enter" />
                             <Button Content="New profile…" Command="{Binding NewProfileCommand}" />
                             <Button Content="Rename…" Command="{Binding RenameProfileCommand}" />
                             <Button Content="Delete…" Command="{Binding DeleteProfileCommand}" ToolTip="Delete key. A zip backup is kept." />
                             <Button Content="Backup now" Command="{Binding BackupNowCommand}" />
-                            <Button Content="Open store folder" Command="{Binding OpenStoreFolderCommand}" ToolTip="{Binding StorePath}" />
-                            <Button Content="Open backups folder" Command="{Binding OpenBackupsFolderCommand}" ToolTip="{Binding BackupPath}" />
                         </WrapPanel>
 
                         <!-- Backups -->
                         <Expander DockPanel.Dock="Bottom" Header="Backups" IsExpanded="False" Margin="0,8,0,0">
-                            <Grid MaxHeight="180" Margin="0,4,0,0">
+                            <DockPanel Margin="0,4,0,0">
+                            <Button DockPanel.Dock="Top" HorizontalAlignment="Right" Style="{StaticResource Button.Small}" Margin="0,0,0,4"
+                                    Content="Open backups folder" Command="{Binding OpenBackupsFolderCommand}" ToolTip="{Binding BackupPath}" />
+                            <Grid MaxHeight="180">
                                 <DataGrid x:Name="BackupsGrid" ItemsSource="{Binding Backups}">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Profile" Binding="{Binding ProfileName}" Width="*" />
@@ -193,10 +209,11 @@
                                            IsHitTestVisible="False"
                                            Visibility="{Binding HasBackups, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}" />
                             </Grid>
+                            </DockPanel>
                         </Expander>
 
                         <!-- Profiles grid -->
-                        <DataGrid x:Name="ProfilesGrid" Margin="0,8,0,0"
+                        <DataGrid x:Name="ProfilesGrid" Margin="0,2,0,0"
                                   ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}"
                                   PreviewKeyDown="ProfilesGrid_PreviewKeyDown"
                                   MouseDoubleClick="ProfilesGrid_MouseDoubleClick">
