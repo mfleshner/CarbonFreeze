@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SaveSwitch.App/SaveSwitch.App.csproj" />
+    <Project Path="src/SaveSwitch.Core/SaveSwitch.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SaveSwitch.Core.Tests/SaveSwitch.Core.Tests.csproj" />
+  </Folder>
+</Solution>
