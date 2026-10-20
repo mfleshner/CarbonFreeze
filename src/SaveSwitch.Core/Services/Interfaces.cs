@@ -87,3 +87,30 @@ public class PathTokenException : Exception
 {
     public PathTokenException(string message) : base(message) { }
 }
+
+public interface IProfileImporter
+{
+    /// <summary>
+    /// Looks for a script-style layout near the game's save path: a directory named "Profiles"
+    /// in the save path's ancestors (up to 4 levels) that holds an "active.txt" and/or
+    /// sub-directories. Returns null when nothing plausible is found. Never throws for
+    /// missing paths or token failures; returns null instead.
+    /// </summary>
+    LegacyLayout? DetectLegacyLayout(GameEntry game);
+
+    /// <summary>Describe an arbitrary folder as a layout (used when the user picks one by hand).</summary>
+    LegacyLayout? DescribeLayout(string profilesDir);
+
+    /// <summary>
+    /// Moves every profile sub-directory of <paramref name="layout"/>.ProfilesDir into the game's
+    /// store as a parked profile (directory rename; cross-volume falls back to copy, verify, delete).
+    /// Directories named "_backups" or starting with "_" are not profiles. A profile whose name
+    /// already exists in the store, or equals the game's current ActiveProfile, is skipped and listed.
+    /// If <paramref name="layout"/>.ActiveProfile is set and <paramref name="setActive"/> is true,
+    /// game.ActiveProfile is set to it (the save folder keeps its contents; only the label changes).
+    /// When <paramref name="moveBackups"/> is true, *.zip files in BackupsDir are moved into the game's
+    /// backup folder. Removes the legacy active.txt and empty legacy directories afterwards.
+    /// Caller persists the config. Throws ProfileException on refusal.
+    /// </summary>
+    ImportResult Import(GameEntry game, LegacyLayout layout, bool setActive, bool moveBackups);
+}
