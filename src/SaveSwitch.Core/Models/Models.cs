@@ -68,16 +68,3 @@ public sealed record SteamInstall(string SteamPath, IReadOnlyList<string> Librar
 public sealed record SteamGame(string AppId, string Name, string InstallDir, string LibraryPath);
 
 public sealed record SteamUser(string SteamId64, string SteamId3, string AccountName, string PersonaName, bool MostRecent);
-
-/// <summary>A profile layout written by the original PowerShell script (or any "folder per profile" scheme).</summary>
-public sealed record LegacyLayout(
-    string ProfilesDir,
-    string? ActiveProfile,
-    IReadOnlyList<string> ProfileNames,
-    string? BackupsDir);
-
-public sealed record ImportResult(
-    IReadOnlyList<string> Imported,
-    IReadOnlyList<string> Skipped,
-    int BackupsMoved,
-    string? ActiveProfileSet);
