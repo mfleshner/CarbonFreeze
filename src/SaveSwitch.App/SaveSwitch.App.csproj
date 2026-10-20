@@ -1,15 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\SaveSwitch.Core\SaveSwitch.Core.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>SaveSwitch</AssemblyName>
+    <RootNamespace>SaveSwitch.App</RootNamespace>
+    <Version>0.1.0</Version>
+    <Product>SaveSwitch</Product>
+    <Description>Save-game profile switcher. Swaps save folders by renaming them; nothing is deleted without a zip backup.</Description>
   </PropertyGroup>
+
+  <!--
+    Single-file, self-contained output is only wired up for Release so that a plain
+    `dotnet build src\SaveSwitch.App` keeps working for everyday development.
+    Publish with publish.ps1 at the repo root (dotnet publish, Release, win-x64, self-contained, single file).
+  -->
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SaveSwitch.Core\SaveSwitch.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
 
 </Project>

@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Presets\presets.json" LogicalName="SaveSwitch.Core.Presets.presets.json" />
+  </ItemGroup>
 </Project>

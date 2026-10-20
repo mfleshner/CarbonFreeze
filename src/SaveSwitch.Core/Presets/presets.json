@@ -1,0 +1,62 @@
+[
+  {
+    "Name": "STAR WARS: Galactic Racer",
+    "SavePathTemplate": "%LOCALAPPDATA%\\StarWarsGalacticRacer\\Saved\\SaveGames\\{SteamId64}",
+    "SteamAppId": "4078430",
+    "Notes": "Uses Steam Cloud; disable it for this game before switching."
+  },
+  {
+    "Name": "Elden Ring",
+    "SavePathTemplate": "%APPDATA%\\EldenRing\\{SteamId64}",
+    "SteamAppId": "1245620",
+    "Notes": "Uses Steam Cloud."
+  },
+  {
+    "Name": "Dark Souls III",
+    "SavePathTemplate": "%APPDATA%\\DarkSoulsIII\\{SteamId64}",
+    "SteamAppId": "374320",
+    "Notes": null
+  },
+  {
+    "Name": "Sekiro: Shadows Die Twice",
+    "SavePathTemplate": "%APPDATA%\\Sekiro\\{SteamId64}",
+    "SteamAppId": "814380",
+    "Notes": null
+  },
+  {
+    "Name": "Hollow Knight",
+    "SavePathTemplate": "{LocalLow}\\Team Cherry\\Hollow Knight",
+    "SteamAppId": "367520",
+    "Notes": null
+  },
+  {
+    "Name": "Stardew Valley",
+    "SavePathTemplate": "%APPDATA%\\StardewValley\\Saves",
+    "SteamAppId": "413150",
+    "Notes": "Each farm is its own subfolder; a profile here is the whole Saves folder."
+  },
+  {
+    "Name": "Cyberpunk 2077",
+    "SavePathTemplate": "{SavedGames}\\CD Projekt Red\\Cyberpunk 2077",
+    "SteamAppId": "1091500",
+    "Notes": null
+  },
+  {
+    "Name": "Hades",
+    "SavePathTemplate": "{SavedGames}\\Hades",
+    "SteamAppId": "1145360",
+    "Notes": "Older installs use {Documents}\\Saved Games\\Hades."
+  },
+  {
+    "Name": "The Elder Scrolls V: Skyrim Special Edition",
+    "SavePathTemplate": "{Documents}\\My Games\\Skyrim Special Edition\\Saves",
+    "SteamAppId": "489830",
+    "Notes": null
+  },
+  {
+    "Name": "Baldur's Gate 3",
+    "SavePathTemplate": "%LOCALAPPDATA%\\Larian Studios\\Baldur's Gate 3\\PlayerProfiles\\Public\\Savegames\\Story",
+    "SteamAppId": "1086940",
+    "Notes": null
+  }
+]
