@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>CarbonFreeze</AssemblyName>
+    <RootNamespace>CarbonFreeze.App</RootNamespace>
+    <Version>0.2.0</Version>
+    <Product>CarbonFreeze</Product>
+    <Description>Save-game profile switcher. Swaps save folders by renaming them; nothing is deleted without a zip backup.</Description>
+    <!-- Application.ThemeMode (Fluent theme) is marked experimental in WPF; the API is stable enough for our use. -->
+    <NoWarn>$(NoWarn);WPF0001</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    Single-file, self-contained output is only wired up for Release so that a plain
+    `dotnet build src\CarbonFreeze.App` keeps working for everyday development.
+    Publish with publish.ps1 at the repo root (dotnet publish, Release, win-x64, self-contained, single file).
+  -->
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CarbonFreeze.Core\CarbonFreeze.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+</Project>

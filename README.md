@@ -1,12 +1,31 @@
-# SaveSwitch
+# CarbonFreeze
 
-A small Windows tool for games that only keep one save. SaveSwitch lets you keep several
+Freeze a save. Thaw it later.
+
+A small Windows tool for games that only keep one save. CarbonFreeze lets you keep several
 independent saves ("profiles") for the same game and swap between them in one click, so two
 people can share a PC, or you can keep a "before the boss" snapshot without touching the game.
 
+![CarbonFreeze main window](docs/screenshot-main.png)
+
+![Add game dialog with Steam auto-fill](docs/screenshot-add-game.png)
+
+## Download
+
+- **[Latest release](https://github.com/mfleshner/CarbonFreeze/releases/latest)**: a single
+  `CarbonFreeze.exe`, nothing to install, no runtime needed. Put it anywhere and run it.
+- Windows Package Manager, once the manifest is accepted: `winget install mfleshner.CarbonFreeze`
+
+The exe is not code-signed yet, so Windows SmartScreen shows "Windows protected your PC" on
+first run. Click **More info**, then **Run anyway**. The source is here if you would rather
+build it yourself (see *Build and publish*).
+
+Works with any game that keeps its save in a folder. Steam games are picked from a list and
+the save folder is filled in automatically for most of them.
+
 ## How it works (and why it is safe)
 
-A game's save is a folder. SaveSwitch never edits files inside it; it only moves whole folders:
+A game's save is a folder. CarbonFreeze never edits files inside it; it only moves whole folders:
 
 1. **Backup first.** The current save folder is zipped into the game's backups folder.
 2. **Park.** The save folder is renamed into the store under the active profile's name
@@ -26,7 +45,7 @@ Old backups are pruned per game once there are more than *Max backups per game* 
 ## Steam Cloud warning
 
 If Steam Cloud is enabled for a game, Steam will happily "restore" whatever it last synced on
-top of the profile you just swapped in. SaveSwitch shows a yellow banner when it detects cloud
+top of the profile you just swapped in. CarbonFreeze shows a yellow banner when it detects cloud
 data for the game (`userdata\<id>\<appid>\remotecache.vdf` exists) and the game's Cloud switch
 has not been turned off (`cloudenabled "0"` in `userdata\<id>\7\remote\sharedconfig.vdf`).
 Before switching, turn it off in
@@ -37,20 +56,20 @@ Before switching, turn it off in
 Requirements: .NET 10 SDK, Windows.
 
 ```
-dotnet build src\SaveSwitch.App          # debug build
+dotnet build src\CarbonFreeze.App          # debug build
 dotnet test                              # core library tests
-.\publish.ps1                            # single-file, self-contained publish\SaveSwitch.exe
+.\publish.ps1                            # single-file, self-contained publish\CarbonFreeze.exe
 ```
 
 `publish.ps1` runs
-`dotnet publish src\SaveSwitch.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish`.
+`dotnet publish src\CarbonFreeze.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish`.
 The single-file / self-contained settings are only active in the Release configuration so a
 plain `dotnet build` stays fast.
 
 Solution layout:
 
-- `src\SaveSwitch.Core` - path expansion, Steam discovery, profile swap, config, presets. No UI.
-- `src\SaveSwitch.App` - WPF front end (MVVM, CommunityToolkit.Mvvm).
+- `src\CarbonFreeze.Core` - path expansion, Steam discovery, profile swap, config, presets. No UI.
+- `src\CarbonFreeze.App` - WPF front end (MVVM, CommunityToolkit.Mvvm).
 - `tests` - core unit tests.
 
 ## Adding a game
@@ -95,8 +114,8 @@ as an error in the dialog and in the game header.
 
 | What                       | Default location                                   |
 |----------------------------|----------------------------------------------------|
-| Config (`config.json`)     | `%APPDATA%\SaveSwitch\config.json`                 |
-| Store (parked profiles)    | `%LOCALAPPDATA%\SaveSwitch\Store\<game>\...`       |
+| Config (`config.json`)     | `%APPDATA%\CarbonFreeze\config.json`                 |
+| Store (parked profiles)    | `%LOCALAPPDATA%\CarbonFreeze\Store\<game>\...`       |
 | Backups (zips)             | inside the game's store folder                     |
 
 The store root can be changed globally in **Settings...** or per game under **Advanced >
@@ -106,3 +125,19 @@ System (follows the Windows app mode, the default), Light or Dark. The change ap
 
 Keyboard: **Enter** on a profile row switches, **Delete** deletes (with confirmation), **F5**
 refreshes.
+
+## Support
+
+CarbonFreeze is free and open source. If it saved your save, you can
+[buy me a coffee on Ko-fi](https://ko-fi.com/mfleshner).
+
+## Upgrading from SaveSwitch
+
+CarbonFreeze used to be called SaveSwitch. The first run moves the old config
+(`%APPDATA%\SaveSwitch\config.json`) and the old store (`%LOCALAPPDATA%\SaveSwitch\Store`) to
+the new names. Close any running SaveSwitch.exe first and delete it afterwards; nothing else
+changes.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
