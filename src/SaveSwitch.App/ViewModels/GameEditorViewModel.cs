@@ -166,6 +166,7 @@ public sealed partial class GameEditorViewModel : ObservableObject
             }
         }
         OnPropertyChanged(nameof(ResolveStatusText));
+        OnPropertyChanged(nameof(CanAccept));
     }
 
     // ---------------------------------------------------------------- commands

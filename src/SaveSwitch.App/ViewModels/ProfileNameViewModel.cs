@@ -46,5 +46,8 @@ public sealed partial class ProfileNameViewModel : ObservableObject
         {
             ValidationMessage = ex.Message;
         }
+        // ValidationMessage may not change (null -> null) when the name is valid,
+        // so the NotifyPropertyChangedFor on it would not fire. Always re-notify.
+        OnPropertyChanged(nameof(IsValid));
     }
 }
