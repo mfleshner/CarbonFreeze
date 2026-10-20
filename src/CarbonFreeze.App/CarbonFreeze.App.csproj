@@ -9,7 +9,7 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>CarbonFreeze</AssemblyName>
     <RootNamespace>CarbonFreeze.App</RootNamespace>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <Product>CarbonFreeze</Product>
     <Description>Save-game profile switcher. Swaps save folders by renaming them; nothing is deleted without a zip backup.</Description>
     <!-- Application.ThemeMode (Fluent theme) is marked experimental in WPF; the API is stable enough for our use. -->
